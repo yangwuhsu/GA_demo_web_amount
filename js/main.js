@@ -19,9 +19,9 @@ function Init(){
             CartArr = localGetCart;
             cartCount.textContent = CartArr.length;
             if(addCartBtns.length >0){
-                console.log(CartArr);
+                // console.log(CartArr);
                 CartArr.forEach((element,index,arrays)=>{
-                    console.log(element.image);
+                    // console.log(element.image);
                     addCartBtns[element.id].value = 'In Cart';
                     InitProduct[element.id].classList.add('InCartBorder');
                     addCartBtns[element.id].classList.add('inputInCart');
@@ -48,7 +48,7 @@ function Init(){
                 name:productDOMContainer.querySelector('.item-title').innerText,
                 price:productDOMContainer.querySelector('.price').innerText,
                 amount:1,
-                subtotal:0,
+                subtotal:productDOMContainer.querySelector('.price').innerText
             }
         productArr.push(productParam);
         
@@ -63,8 +63,10 @@ function Init(){
             if(addCartBtns[index].value !== 'In Cart'){
                 CartArr.push(productArr[index]);
                 localStorage.setItem('cartItems',JSON.stringify(CartArr));
+                var subtotalLocal = parseInt(productArr[index].subtotal.substring(1));
+                console.log(subtotalLocal);
                 ReloadCart();
-                console.log(JSON.parse(localStorage.getItem('cartItems')));
+                // console.log(JSON.parse(localStorage.getItem('cartItems')));
             }
         });
     });

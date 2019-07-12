@@ -7,15 +7,26 @@ const Init = () =>{
     var localGetCart = [];
     var CartArr = [];
 
+     // 查詢顯示結帳處
+     const totalBtn = document.querySelector('.cart_total_price');
+
     localGetCart = JSON.parse(localStorage.getItem('cartItems'));
    
     ReloadCart();
     
         function ReloadCart(){
             localGetCart = JSON.parse(localStorage.getItem('cartItems'));
+            
             if(localGetCart){
                 CartArr = localGetCart;
                 cartCount.textContent = CartArr.length;
+                var localTotal = 0;
+                console.log(CartArr.length);
+                for(let i = 0;i<CartArr.length;i++){
+                    localTotal = localTotal + parseInt(CartArr[i].subtotal.substring(1));
+                }
+             
+                totalBtn.textContent = "$"+localTotal;
                 if(addCartBtns.length !== 0){
                     // 改變已加到購物車的div樣式 用id判斷
                     CartId = CartArr.map(item =>item.id);
@@ -31,8 +42,7 @@ const Init = () =>{
     const checkOut = document.querySelector('.cart_check_out_container');
     // 顯示畫面的容器
     const cartDOM = document.querySelector('.cart_container');
-    // 查詢顯示結帳處
-    const totalBtn = document.querySelector('.cart_total_price');
+   
 
     
     var  totalPrice = 0;
@@ -59,6 +69,8 @@ const Init = () =>{
         const CartMinusBtns = document.querySelectorAll('.cart_minus');
         // 數量
         const CartAmount = document.querySelectorAll('.cart_amount');
+        // 小計
+        const SubTotal = document.querySelectorAll('.cart_item_subtotal');
         
         // 點擊增加商品數量
         CartAddBtns.forEach((CartAddBtn,index)=>{
@@ -66,15 +78,17 @@ const Init = () =>{
             var amount = CartArr[index].amount;
             var price = CartArr[index].price.substring(1);
             CartAddBtn.addEventListener('click',()=>{
-                amount = amount +1;
+                if(amount<10){
+                    amount = amount +1;
+                }
                 CartArr[index].amount = amount;
                 var SubTotalPrice = price*amount;
-                CartArr[index].subtotal = SubTotalPrice;
+                CartArr[index].subtotal = "$"+SubTotalPrice;
                 localStorage.setItem('cartItems',JSON.stringify(CartArr));
                 ReloadCart();
             CartAmount[index].innerHTML = CartArr[index].amount;
-            SubTotal[index].innerHTML = "$"+CartArr[index].subtotal;
-               
+            SubTotal[index].innerHTML = CartArr[index].subtotal;
+       
             });
             
         });
@@ -91,23 +105,16 @@ const Init = () =>{
                     CartArr[index].amount = amount;
                 }
                 var SubTotalPrice = price*amount;
-                CartArr[index].subtotal = SubTotalPrice;
+                CartArr[index].subtotal = "$"+SubTotalPrice;
                 localStorage.setItem('cartItems',JSON.stringify(CartArr));
+                 
                 ReloadCart();
             CartAmount[index].innerHTML = CartArr[index].amount;
-            SubTotal[index].innerHTML = "$"+ CartArr[index].subtotal;
+            SubTotal[index].innerHTML = CartArr[index].subtotal;
+         
                
             });
         });
-
-        // 總金額
-        const SubTotal = document.querySelectorAll('.cart_item_subtotal');
-        var all = 0;
-        for(let i = 0;i<SubTotal.length;i++){
-            var total = parseInt(SubTotal[i].textContent);   
-            all = all+total;    
-        }
-        totalBtn.textContent = "$"+all;        
 
     });
 
