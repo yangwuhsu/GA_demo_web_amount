@@ -19,9 +19,15 @@ const Init = () =>{
             
             if(localGetCart){
                 CartArr = localGetCart;
-                cartCount.textContent = CartArr.length;
+                localAmount = 0
+                for(let i = 0;i<CartArr.length;i++){
+                    localAmount += CartArr[i].amount;
+                }
+                cartCount.textContent = localAmount;
+
+                
                 var localTotal = 0;
-                console.log(CartArr.length);
+              
                 for(let i = 0;i<CartArr.length;i++){
                     localTotal = localTotal + parseInt(CartArr[i].subtotal.substring(1));
                 }
